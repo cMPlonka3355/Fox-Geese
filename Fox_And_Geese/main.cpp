@@ -293,6 +293,51 @@ void fox_move(char b[8][8], Fox f[1]){
     f[0].column = chosen.column;
 }
 
+//checks if win conditions for game have been met
+bool check_game_over(char b[8][8], Fox f) {
+    //checks if fox wins by reaching top row
+    if (f.row == 0) {
+        cout << "The fox wins!!" << endl;
+        return true;
+    }
+    //checks if geese win by trapping the fox, so it can't move
+    else {
+        if (f.row == 7) {
+            //left bottom corner
+            if (f.column == 0 && b[f.row + 1][f.column - 1] != 32) {
+                cout << "The geese win!!" << endl;
+                return true;
+            }
+                //right bottom corner
+            else if (f.column == 7 && b[f.row - 1][f.column - 1] != 32) {
+                cout << "The geese win!!" << endl;
+                return true;
+            }
+                //not in either corner
+            else {
+                if (b[f.row - 1][f.column - 1] != 32 && b[f.row + 1][f.column - 1] != 32) {
+                    cout << "The geese win!!" << endl;
+                    return true;
+                }
+            }
+        }
+        else if (f.column == 0 && b[f.row - 1][f.column + 1] != 32 && b[f.row + 1][f.column + 1] != 32){
+            cout << "The geese win!!" << endl;
+            return true;
+        }
+        else if (f.column == 7 && b[f.row - 1][f.column - 1] != 32 && b[f.row + 1][f.column - 1] != 32){
+            cout << "The geese win!!" << endl;
+            return true;
+        }
+        else if (b[f.row - 1][f.column - 1] != 32 && b[f.row + 1][f.column - 1] != 32 && b[f.row - 1][f.column + 1]
+        != 32 && b[f.row + 1][f.column + 1] != 32){
+            cout << "The geese win!!" << endl;
+            return true;
+        }
+    }
+    return false;
+}
+
 int main() {
     char board[8][8];
 
@@ -307,13 +352,16 @@ int main() {
 
     bool game_over = false;
 
-    while(not game_over){
+    while(!game_over){
         goose_move(board, geese);
         board_set(board, geese, foxes);
-//        game_over = check_game_over();
+        game_over = check_game_over(board, foxes[0]);
+        if(game_over){
+            break;
+        }
         fox_move(board, foxes);
         board_set(board, geese, foxes);
-//        game_over = check_game_over();
+        game_over = check_game_over(board, foxes[0]);
     }
 
     return 0;
