@@ -85,6 +85,9 @@ void goose_move(char b[8][8], Goose g[4]){
                 chosen_goose.column = g[3].column;
                 chosen_goose.sign = g[3].sign;
                 break;
+            default:
+                cout << "That is not a valid choice." << endl;
+                goto START;
         }
         if (chosen_goose.row == 7) {
             cout << "You cannot move that piece." << endl;
@@ -99,61 +102,71 @@ void goose_move(char b[8][8], Goose g[4]){
         [chosen_goose.column - 1] != 32){
             cout << "You cannot move that piece." << endl;
         }
-        else{ valid_choice = true;}
+        else{valid_choice = true;}
     }
     //Moves piece that is on left edge
     if(chosen_goose.column == 0){
         char confirm;
-        cout << "You can only move downward right. Continue? (Y/n): ";
-        cin >> confirm;
-        if (confirm == 110){
-            valid_choice = false;
-            goto START;
-        }
-        else if(confirm == 89){
-            chosen_goose.row += 1;
-            chosen_goose.column += 1;
+        bool confirmation = false;
+        while (!confirmation) {
+            cout << "You can only move downward right. Continue? (Y/n): ";
+            cin >> confirm;
+            if (confirm == 110) {
+                valid_choice = false;
+                goto START;
+            } else if (confirm == 89) {
+                confirmation = true;
+                chosen_goose.row += 1;
+                chosen_goose.column += 1;
+            }
+            else{cout << "That is not a valid option." << endl;}
         }
     }
     //Moves piece that is on right edge
     else if(chosen_goose.column == 7){
         char confirm;
-        cout << "You can only move downward left. Continue? (Y/n): ";
-        cin >> confirm;
-        if (confirm == 110){
-            valid_choice = false;
-            goto START;
-        }
-        else if(confirm == 89){
-            chosen_goose.row += 1;
-            chosen_goose.column -= 1;
+        bool confirmation = false;
+        while (!confirmation) {
+            cout << "You can only move downward left. Continue? (Y/n): ";
+            cin >> confirm;
+            if (confirm == 110) {
+                valid_choice = false;
+                goto START;
+            } else if (confirm == 89) {
+                confirmation = true;
+                chosen_goose.row += 1;
+                chosen_goose.column -= 1;
+            }
+            else{cout << "That is not a valid option." << endl;}
         }
     }
     //Moves piece not on left or right edge
     else{
         char confirm, direction;
-        bool can_move = false;
-        cout << "You can choose to move downward left or right. Continue? (Y/n): ";
-        cin >> confirm;
-        if (confirm == 110){
-            valid_choice = false;
-            goto START;
-        }
-        else if(confirm == 89){
-            while(!can_move) {
-                cout << "Would you like to go (L)eft or (r)ight? ";
-                cin >> direction;
-                if (direction == 76 && b[chosen_goose.row + 1][chosen_goose.column - 1] == 32) {
-                    chosen_goose.row += 1;
-                    chosen_goose.column -= 1;
-                    can_move = true;
-                } else if (direction == 114 && b[chosen_goose.row + 1][chosen_goose.column + 1]) {
-                    chosen_goose.row += 1;
-                    chosen_goose.column += 1;
-                    can_move = true;
+        bool can_move = false, confirmation = false;
+        while (!confirmation) {
+            cout << "You can choose to move downward left or right. Continue? (Y/n): ";
+            cin >> confirm;
+            if (confirm == 110) {
+                valid_choice = false;
+                goto START;
+            } else if (confirm == 89) {
+                confirmation = true;
+                while (!can_move) {
+                    cout << "Would you like to go (L)eft or (r)ight? ";
+                    cin >> direction;
+                    if (direction == 76 && b[chosen_goose.row + 1][chosen_goose.column - 1] == 32) {
+                        chosen_goose.row += 1;
+                        chosen_goose.column -= 1;
+                        can_move = true;
+                    } else if (direction == 114 && b[chosen_goose.row + 1][chosen_goose.column + 1]) {
+                        chosen_goose.row += 1;
+                        chosen_goose.column += 1;
+                        can_move = true;
+                    } else { cout << "You are unable to make that move." << endl; }
                 }
-                else{cout << "You are unable to make that move." << endl;}
             }
+            else{cout << "That is not a valid option." << endl;}
         }
 
     }
