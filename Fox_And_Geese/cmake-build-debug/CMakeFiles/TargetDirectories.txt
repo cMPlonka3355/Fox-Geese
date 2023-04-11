@@ -1,0 +1,3 @@
+/home/cmplonka/CLionProjects/Fox_And_Geese/cmake-build-debug/CMakeFiles/Fox_And_Geese.dir
+/home/cmplonka/CLionProjects/Fox_And_Geese/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/cmplonka/CLionProjects/Fox_And_Geese/cmake-build-debug/CMakeFiles/rebuild_cache.dir
