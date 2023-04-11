@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//Class for Goose Piece Object
 class Goose{
 public:
     int row, column;
@@ -14,14 +15,20 @@ public:
     }
 };
 
+//Class for Fox Piece Object
 class Fox{
 public:
     int row, column;
     string type = "fox";
     char sign = 70;
+    Fox(int r, int c){
+        row = r;
+        column = c;
+    }
 };
 
-void board_set(char b[8][8], Goose g[4], Fox f){
+//Function to print out board with pieces
+void board_set(char b[8][8], Goose g[4], Fox f[1]){
     for (int i = 0; i < 8; i++){
         for (int j = 0; j < 8; j++){
             if ((j+i)%2 == 0) {
@@ -37,7 +44,7 @@ void board_set(char b[8][8], Goose g[4], Fox f){
         b[g[h].row][g[h].column] = g[h].sign;
     }
 
-    b[f.row][f.column] = f.sign;
+    b[f[0].row][f[0].column] = f[0].sign;
 
     for (int i = 0; i < 8; i++){
         for(int j = 0; j < 8; j++){
@@ -104,8 +111,6 @@ void goose_move(char b[8][8], Goose g[4]){
             goto START;
         }
         else if(confirm == 89){
-            b[chosen_goose.row + 1][chosen_goose.column + 1] = chosen_goose.sign;
-            b[chosen_goose.row][chosen_goose.column] = 32;
             chosen_goose.row += 1;
             chosen_goose.column += 1;
         }
@@ -120,8 +125,6 @@ void goose_move(char b[8][8], Goose g[4]){
             goto START;
         }
         else if(confirm == 89){
-            b[chosen_goose.row + 1][chosen_goose.column - 1] = chosen_goose.sign;
-            b[chosen_goose.row][chosen_goose.column] = 32;
             chosen_goose.row += 1;
             chosen_goose.column -= 1;
         }
@@ -141,14 +144,10 @@ void goose_move(char b[8][8], Goose g[4]){
                 cout << "Would you like to go (L)eft or (r)ight? ";
                 cin >> direction;
                 if (direction == 76 && b[chosen_goose.row + 1][chosen_goose.column - 1] == 32) {
-                    b[chosen_goose.row + 1][chosen_goose.column - 1] = chosen_goose.sign;
-                    b[chosen_goose.row][chosen_goose.column] = 32;
                     chosen_goose.row += 1;
                     chosen_goose.column -= 1;
                     can_move = true;
                 } else if (direction == 114 && b[chosen_goose.row + 1][chosen_goose.column + 1]) {
-                    b[chosen_goose.row + 1][chosen_goose.column + 1] = chosen_goose.sign;
-                    b[chosen_goose.row][chosen_goose.column] = 32;
                     chosen_goose.row += 1;
                     chosen_goose.column += 1;
                     can_move = true;
@@ -178,54 +177,142 @@ void goose_move(char b[8][8], Goose g[4]){
             break;
     }
 }
-
-void fox_move(char b[8][8], Fox f){
-    cout << "It is the fox's turn." << endl;
+//determines how fox piece moves
+void fox_move(char b[8][8], Fox f[1]){
+    Fox chosen(NULL, NULL);
+    chosen.row = f[0].row;
+    chosen.column = f[0].column;
     char lateral, longitude;
-    if (f.row == 0){
-        if (f.column == 0){
+    bool valid_choice = false;
+    //movement for when it is in the bottom row
+    if (chosen.row == 7){
+        //left bottom corner
+        if (chosen.column == 0){
             cout << "You can only move upward right." << endl;
-            b[f.row + 1][f.column + 1] = f.sign;
-            b[f.row][f.column] = 32;
-            f.row += 1;
-            f.column += 1;
+            chosen.row -= 1;
+            chosen.column += 1;
         }
-        else if (f.column == 7){
+        //right bottom corner
+        else if (chosen.column == 7){
             cout << "You can only move upward left." << endl;
-            b[f.row + 1][f.column - 1] = f.sign;
-            b[f.row][f.column] = 32;
-            f.row += 1;
-            f.column -= 1;
+            chosen.row -= 1;
+            chosen.column -= 1;
         }
-        else{
-            cout << "Would you like to move upward (L)eft or (r)ight? ";
-            cin >> lateral;
+        //not in either corner
+        else {
+            while (!valid_choice) {
+                cout << "Would you like to move upward (L)eft or (r)ight? ";
+                cin >> lateral;
+                if (lateral == 76 && b[chosen.row - 1][chosen.column - 1] == 32) {
+                    chosen.row = chosen.row - 1;
+                    chosen.column = chosen.column - 1;
+                    valid_choice = true;
+                } else if (lateral == 114 && b[chosen.row - 1][chosen.column + 1] == 32) {
+                    chosen.row -= 1;
+                    chosen.column += 1;
+                    valid_choice = true;
+                }
+                else {cout << "You cannot move your piece there." << endl;}
+            }
 
         }
     }
+    //movement for while on the left side of the board
+    else if(chosen.column == 0){
+        while (!valid_choice){
+            cout << "Would you like to move right (U)pwards or (d)ownwards? ";
+            cin >> longitude;
+            if(longitude == 85 && b[chosen.row - 1][chosen.column + 1] == 32){
+                chosen.row -= 1;
+                chosen.column += 1;
+                valid_choice = true;
+            }
+            else if(longitude == 100 && b[chosen.row + 1][chosen.column + 1] == 32){
+                chosen.row += 1;
+                chosen.column += 1;
+                valid_choice = true;
+            }
+            else{cout << "You cannot move your piece there." << endl;}
+        }
+    }
+    //movement for while on the right side of the board
+    else if(chosen.column == 7){
+        while (!valid_choice){
+            cout << "Would you like to move left (U)pwards or (d)ownwards? ";
+            cin >> longitude;
+            if(longitude == 85 && b[chosen.row - 1][chosen.column - 1] == 32){
+                chosen.row -= 1;
+                chosen.column -= 1;
+                valid_choice = true;
+            }
+            else if(longitude == 100 && b[chosen.row + 1][chosen.column - 1] == 32){
+                chosen.row += 1;
+                chosen.column -= 1;
+                valid_choice = true;
+            }
+            else{cout << "You cannot move your piece there." << endl;}
+        }
+    }
+
+    //movement for in the middle of the board
+    else{
+        while(!valid_choice) {
+            cout << "Would you like to move (U)p or (d)own? ";
+            cin >> longitude;
+            cout << "Would you like to move (L)eft or (r)ight? ";
+            cin >> lateral;
+            if(longitude == 85){
+                if (lateral == 76 && b[chosen.row - 1][chosen.column - 1] == 32) {
+                    chosen.row -= 1;
+                    chosen.column -= 1;
+                    valid_choice = true;
+                }
+                else if (lateral == 114 && b[chosen.row - 1][chosen.column + 1] == 32) {
+                    chosen.row -= 1;
+                    chosen.column += 1;
+                    valid_choice = true;
+                }
+                else {cout << "You cannot move your piece there." << endl;}
+            }
+            else if(longitude == 100){
+                if (lateral == 76 && b[chosen.row + 1][chosen.column - 1] == 32) {
+                    chosen.row += 1;
+                    chosen.column -= 1;
+                    valid_choice = true;
+                }
+                else if (lateral == 114 && b[chosen.row + 1][chosen.column + 1] == 32) {
+                    chosen.row += 1;
+                    chosen.column += 1;
+                    valid_choice = true;
+                }
+                else {cout << "You cannot move your piece there." << endl;}
+            }
+        }
+    }
+    f[0].row = chosen.row;
+    f[0].column = chosen.column;
 }
 
 int main() {
     char board[8][8];
 
-    Fox fox;
-    fox.row = 7;
-    fox.column = 4;
+    Fox fox(7, 4);
 
     Goose goose1(0, 1, 65), goose2(0, 3, 66), goose3(0, 5, 67), goose4(0, 7, 68);
 
     Goose geese[4] = {goose1, goose2, goose3, goose4};
+    Fox foxes[1] = {fox};
 
-    board_set(board, geese, fox);
+    board_set(board, geese, foxes);
 
     bool game_over = false;
 
     while(not game_over){
         goose_move(board, geese);
-        board_set(board, geese, fox);
+        board_set(board, geese, foxes);
 //        game_over = check_game_over();
-//        fox_move(board, fox);
-//        board_set(board, geese, fox);
+        fox_move(board, foxes);
+        board_set(board, geese, foxes);
 //        game_over = check_game_over();
     }
 
