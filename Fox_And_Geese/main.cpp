@@ -231,6 +231,7 @@ void goose_move(char b[8][8], Goose g[4]){
 }
 //determines how fox piece moves
 void fox_move(char b[8][8], Fox f[1]){
+    cout << "It is the fox's turn." << endl;
     Fox chosen(NULL, NULL);
     chosen.row = f[0].row;
     chosen.column = f[0].column;
