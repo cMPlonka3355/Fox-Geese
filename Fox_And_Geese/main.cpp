@@ -198,7 +198,7 @@ void goose_move(char b[8][8], Goose g[4]){
                         chosen_goose.row += 1;
                         chosen_goose.column -= 1;
                         can_move = true;
-                    } else if (direction == 114 && b[chosen_goose.row + 1][chosen_goose.column + 1]) {
+                    } else if (direction == 114 && b[chosen_goose.row + 1][chosen_goose.column + 1] == 32) {
                         chosen_goose.row += 1;
                         chosen_goose.column += 1;
                         can_move = true;
