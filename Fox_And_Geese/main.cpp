@@ -27,6 +27,45 @@ public:
     }
 };
 
+//prints fun fox if fox wins :3
+void print_fox(){
+    cout << R"( /\   /\)" << endl;
+    cout << R"(//\\_//\\     ____)" << endl;
+    cout << R"(\_     _/    /   /)" << endl;
+    cout << R"( / ^ ^ \    /^^^])" << endl;
+    cout << R"( \_\O/_/    [   ])" << endl;
+    cout << R"(  /   \_    [   /)" << endl;
+    cout << R"(  \     \_  /  /)" << endl;
+    cout << R"(   [ [ /  \/ _/)" << endl;
+    cout << R"(  _[ [ \  /_/)" << endl;
+}
+
+//prints fun goose if geese win :3
+void print_goose(){
+    cout << R"(                                   ___)" << endl;
+    cout << R"(                               ,-""   `.)" << endl;
+    cout << R"(                             ,'  _   ^ )`-._)" << endl;
+    cout << R"(                            /  ,' `-._<.===-')" << endl;
+    cout << R"(                           /  /)" << endl;
+    cout << R"(                          /  ;)" << endl;
+    cout << R"(   _          _          /   ;)" << endl;
+    cout << R"( (`._    _.-"" ""--..__,'    |)" << endl;
+    cout << R"( <_  `-""                     \)" << endl;
+    cout << R"(  <`-                          :)" << endl;
+    cout << R"(   (__   <__.                  ;)" << endl;
+    cout << R"(     `-.   '-.__.      _.'    /)" << endl;
+    cout << R"(        \      `-.__,-'    _,')" << endl;
+    cout << R"(         `._    ,    /__,-')" << endl;
+    cout << R"(            ""._\__,'< <____)" << endl;
+    cout << R"(                 | |  `----.`.)" << endl;
+    cout << R"(                 | |        \ `.)" << endl;
+    cout << R"(                 ; |___      \-``)" << endl;
+    cout << R"(                 \   --<)" << endl;
+    cout << R"(                  `.`.<)" << endl;
+    cout << R"(                    `-')" << endl;
+
+}
+
 //Function to print out board with pieces
 void board_set(char b[8][8], Goose g[4], Fox f[1]){
     for (int i = 0; i < 8; i++){
@@ -311,6 +350,7 @@ bool check_game_over(char b[8][8], Fox f) {
     //checks if fox wins by reaching top row
     if (f.row == 0) {
         cout << "The fox wins!!" << endl;
+        print_fox();
         return true;
     }
     //checks if geese win by trapping the fox, so it can't move
@@ -319,32 +359,38 @@ bool check_game_over(char b[8][8], Fox f) {
             //left bottom corner
             if (f.column == 0 && b[f.row + 1][f.column - 1] != 32) {
                 cout << "The geese win!!" << endl;
+                print_goose();
                 return true;
             }
                 //right bottom corner
             else if (f.column == 7 && b[f.row - 1][f.column - 1] != 32) {
                 cout << "The geese win!!" << endl;
+                print_goose();
                 return true;
             }
                 //not in either corner
             else {
                 if (b[f.row - 1][f.column - 1] != 32 && b[f.row + 1][f.column - 1] != 32) {
                     cout << "The geese win!!" << endl;
+                    print_goose();
                     return true;
                 }
             }
         }
         else if (f.column == 0 && b[f.row - 1][f.column + 1] != 32 && b[f.row + 1][f.column + 1] != 32){
             cout << "The geese win!!" << endl;
+            print_goose();
             return true;
         }
         else if (f.column == 7 && b[f.row - 1][f.column - 1] != 32 && b[f.row + 1][f.column - 1] != 32){
             cout << "The geese win!!" << endl;
+            print_goose();
             return true;
         }
         else if (b[f.row - 1][f.column - 1] != 32 && b[f.row + 1][f.column - 1] != 32 && b[f.row - 1][f.column + 1]
         != 32 && b[f.row + 1][f.column + 1] != 32){
             cout << "The geese win!!" << endl;
+            print_goose();
             return true;
         }
     }
