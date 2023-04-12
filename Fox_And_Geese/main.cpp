@@ -68,6 +68,7 @@ void print_goose(){
 
 //Function to print out board with pieces
 void board_set(char b[8][8], Goose g[4], Fox f[1]){
+    cout << endl;
     for (int i = 0; i < 8; i++){
         for (int j = 0; j < 8; j++){
             if ((j+i)%2 == 0) {
@@ -91,6 +92,7 @@ void board_set(char b[8][8], Goose g[4], Fox f[1]){
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 //determines how goose pieces move
