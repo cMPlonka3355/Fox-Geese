@@ -6,7 +6,6 @@ using namespace std;
 class Goose{
 public:
     int row, column;
-    string type = "geese";
     char sign;
     Goose(int r, int c, char s){
         row = r;
@@ -19,7 +18,6 @@ public:
 class Fox{
 public:
     int row, column;
-    string type = "fox";
     char sign = 70;
     Fox(int r, int c){
         row = r;
